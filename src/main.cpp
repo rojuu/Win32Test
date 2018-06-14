@@ -1,8 +1,5 @@
 #include <windows.h>
-
 #include <assert.h>
-
-#define internal static
 
 #include <stdint.h>
 typedef int8_t i8;
@@ -57,28 +54,6 @@ WindowProc(HWND hwnd, u32 message, WPARAM w_param, LPARAM l_param) {
 
 i32
 WinMain(HINSTANCE instance, HINSTANCE prev_instance, char* cmd_line, i32 cmd_show) {
-
-    //WNDCLASSEX window_class;
-    //// Fill in the window class structure with parameters
-    //// that describe the main window.
-    //window_class.cbSize = sizeof(window_class); // Size of structure
-    //window_class.style = CS_HREDRAW | CS_VREDRAW; // Redraw if size changes
-    //window_class.lpfnWndProc = WindowProc; // Points to window procedure
-    //window_class.cbClsExtra = 0; // No extra class memory
-    //window_class.cbWndExtra = 0; // No extra window memory
-    //window_class.hInstance = instance; // Handle to instance
-    //window_class.hIcon = 0; // NULL = default
-    //window_class.hCursor = 0; // NULL = default
-    //window_class.hbrBackground = 0; // NULL for now
-    //window_class.lpszMenuName =  0; // Name of menu resource
-    //window_class.lpszClassName = "TestWindowClass"; // Name of window class
-    //window_class.hIconSm = 0; // NULL = default
-
-    //if(!RegisterClassEx(&window_class)) {
-    //    assert(false);
-    //    return -1;
-    //}
-
     WNDCLASS window_class;
     window_class.style = CS_HREDRAW|CS_VREDRAW;
     window_class.lpfnWndProc = WindowProc;

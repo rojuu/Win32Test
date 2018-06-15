@@ -26,20 +26,16 @@ WindowProc(HWND hwnd, u32 message, WPARAM w_param, LPARAM l_param) {
     PAINTSTRUCT ps;
     HDC hdc;
     char* greeting = "Hello, World!";
+
     switch (message) {
         case WM_PAINT:
-        hdc = BeginPaint(hwnd, &ps);
-
-        // Here your application is laid out.
-        // For this introduction, we just print out "Hello, World!"
-        // in the top left corner.
-        TextOutA(hdc, 5, 5, greeting, strlen(greeting));
-        // End application-specific layout section.
-
-        EndPaint(hwnd, &ps);
+            hdc = BeginPaint(hwnd, &ps);
+            TextOutA(hdc, 5, 5, greeting, strlen(greeting));
+            EndPaint(hwnd, &ps);
         break;
         //case WM_DESTROY:
-        // TODO: We might want to do something if our window is destroyed:
+            // TODO: We might want to do something if our window is destroyed:
+            // break;
         default:
         return DefWindowProc(hwnd, message, w_param, l_param);
     }

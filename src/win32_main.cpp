@@ -75,11 +75,9 @@ render_loop() {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // draw our first triangle
     glUseProgram(global_shader_program);
     glBindVertexArray(global_VAO);
     glDrawArrays(GL_TRIANGLES, 0, 3);
-    // glBindVertexArray(0); // no need to unbind it every time
 
     SwapBuffers(global_hdc);
 }
@@ -351,18 +349,12 @@ WinMain(HINSTANCE instance, HINSTANCE prev_instance, char* cmd_line, i32 cmd_sho
             last_frame_count  = frame_counter;
             char title[64];
             sprintf(title, "FPS: %lu", delta_frames);
-            // SDL_SetWindowTitle(window, title);
             SetWindowTextA(global_hwnd, title);
         }
 
         process_pending_messages();
         render_loop();
     }
-
-    // wglMakeCurrent(NULL, NULL);
-    // ReleaseDC(global_hwnd, global_hdc);
-    // wglDeleteContext(global_hrc);
-    // DestroyWindow(global_hwnd);
 
     return 0;
 }

@@ -299,25 +299,19 @@ process_pending_messages() {
     }
 }
 
-b32
-query_seconds(f64* seconds) {
+f64
+query_seconds() {
     LARGE_INTEGER performance_counter;
     LARGE_INTEGER performance_frequency;
     b32 has_performance_counter = true;
 
-    if(!QueryPerformanceCounter(&performance_counter)) {
-        has_performance_counter = false;
-    }
+    //TODO: These might fail sometimes. Handle failure states somehow.
+    // Maybe use some lower res timer instead?
+    QueryPerformanceCounter(&performance_counter);
+    QueryPerformanceFrequency(&performance_frequency);
 
-    if(!QueryPerformanceFrequency(&performance_frequency)) {
-        has_performance_counter = false;
-    }
-
-    if(has_performance_counter) {
-        *seconds = (f64)performance_counter.QuadPart / (f64)performance_frequency.QuadPart;
-    }
-
-    return has_performance_counter;
+    f64 seconds = (f64)performance_counter.QuadPart / (f64)performance_frequency.QuadPart;
+    return seconds;
 }
 
 i32
@@ -339,27 +333,26 @@ WinMain(HINSTANCE instance, HINSTANCE prev_instance, char* cmd_line, i32 cmd_sho
     f64 delta_time;
     f64 last_time;
     f64 last_fps_time = 0;
-    b32 has_time = query_seconds(&current_time);
+    current_time = query_seconds();
 
-    i32 frame_counter = 0;
-    i32 last_frame_count = 0;
+    u32 frame_counter = 0;
+    u32 last_frame_count = 0;
 
     while(global_running) {
         last_time = current_time;
-        has_time = query_seconds(&current_time);
-        if(has_time) {
-            delta_time = current_time - last_time;
-            // Count frames for every second and print it as the title of the window
-            ++frame_counter;
-            if(current_time >= (last_fps_time + 1.f)) {
-                last_fps_time  = current_time;
-                i32 delta_frames = frame_counter - last_frame_count;
-                last_frame_count  = frame_counter;
-                char title[64];
-                sprintf(title, "FPS: %d", delta_frames);
-                // SDL_SetWindowTitle(window, title);
-                SetWindowTextA(global_hwnd, title);
-            }
+        current_time = query_seconds();
+        delta_time = current_time - last_time;
+
+        // Count frames for every second and print it as the title of the window
+        ++frame_counter;
+        if(current_time >= (last_fps_time + 1.0)) {
+            last_fps_time  = current_time;
+            u32 delta_frames = frame_counter - last_frame_count;
+            last_frame_count  = frame_counter;
+            char title[64];
+            sprintf(title, "FPS: %lu", delta_frames);
+            // SDL_SetWindowTitle(window, title);
+            SetWindowTextA(global_hwnd, title);
         }
 
         process_pending_messages();

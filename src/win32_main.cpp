@@ -29,19 +29,19 @@ static HGLRC global_hrc;
 
 static b32 global_running = true;
 
-f32 global_vertices[] = {
+static f32 global_vertices[] = {
     -0.5f, -0.5f, 0.0f,
      0.5f, -0.5f, 0.0f,
      0.0f,  0.5f, 0.0f
 };
 
-f32 global_colors[] = {
+static f32 global_colors[] = {
     1.0f, 0.0f, 0.0f,
     0.0f, 1.0f, 0.0f,
     0.0f, 0.0f, 1.0f,
 };
 
-const char* global_vertex_shader_source = R"FOO(
+static const char* global_vertex_shader_source = R"FOO(
 #version 330 core
 layout (location = 0) in vec3 in_pos;
 layout (location = 1) in vec3 in_col;
@@ -56,7 +56,7 @@ void main()
 )FOO";
 
 
-const char* global_fragment_shader_source = R"FOO(
+static const char* global_fragment_shader_source = R"FOO(
 #version 330 core
 out vec4 out_color;
 in vec3 frag_color;
@@ -70,7 +70,7 @@ void main()
 static u32 global_shader_program;
 static u32 global_VAO;
 
-void
+static void
 render_loop() {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -84,7 +84,8 @@ render_loop() {
     SwapBuffers(global_hdc);
 }
 
-static void compile_shaders() {
+static void
+compile_shaders() {
     i32 vertex_shader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertex_shader, 1, &global_vertex_shader_source, NULL);
     glCompileShader(vertex_shader);
@@ -179,6 +180,7 @@ WindowProc(HWND hwnd, u32 message, WPARAM w_param, LPARAM l_param) {
 
     return 0;
 }
+
 static i32
 init_window_and_gl_context(HINSTANCE instance) {
     WNDCLASS window_class = {};
